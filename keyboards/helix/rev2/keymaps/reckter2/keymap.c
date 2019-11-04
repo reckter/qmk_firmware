@@ -399,6 +399,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
+
+
+
+    // switch unicode input mode
+    case OS_LIN:
+        set_unicode_input_mode(UC_LNX);
+        return false;
+        break;
+    case OS_WIN:
+        set_unicode_input_mode(UC_WIN);
+        return false;
+        break;
+    case OS_MAC:
+        set_unicode_input_mode(UC_OSX);
+        return false;
+        break;
+
     case UC_AE:
     case UC_OE:
     case UC_UE:
