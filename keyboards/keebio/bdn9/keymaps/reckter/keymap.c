@@ -15,6 +15,13 @@
  */
 #include QMK_KEYBOARD_H
 
+enum custom_keycodes
+{
+    HELP,
+    GAME_BOT,
+
+};
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*
         | Knob 1: Vol Dn/Up |      | Knob 2: Page Dn/Up |
@@ -23,9 +30,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         | Left              | Down | Right              |
      */
     [0] = LAYOUT(
-        KC_MUTE, KC_HOME, KC_MPLY,
-        MO(1)  , KC_UP  , RGB_MOD,
-        KC_LEFT, KC_DOWN, KC_RGHT
+        KC_MUTE, MO(1), KC_MPLY,
+        HYPR(KC_1), HYPR(KC_2), HELP,
+        GAME_BOT, HYPR(KC_5), HYPR(KC_6)
     ),
     /*
         | RESET          | N/A  | Media Stop |
@@ -33,9 +40,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         | Media Previous | End  | Media Next |
      */
     [1] = LAYOUT(
-        RESET  , BL_STEP, KC_STOP,
+        RESET  , _______, KC_STOP,
         _______, KC_HOME, RGB_MOD,
-        KC_MPRV, KC_END , KC_MNXT
+        GAME_BOT, KC_END , KC_MNXT
     ),
 };
 
@@ -54,4 +61,40 @@ void encoder_update_user(uint8_t index, bool clockwise) {
             tap_code(KC_PGUP);
         }
     }
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch(keycode) {
+        case(HELP):
+            if (record->event.pressed) {
+            // when keycode QMKBEST is pressed
+            SEND_STRING(SS_DOWN(X_LCTRL));
+            SEND_STRING(SS_DOWN(X_LGUI));
+            SEND_STRING(SS_DOWN(X_RALT));
+            SEND_STRING(SS_DOWN(X_RSHIFT));
+            SEND_STRING("1");
+            SEND_STRING(SS_UP(X_LCTRL));
+            SEND_STRING(SS_UP(X_LGUI));
+            SEND_STRING(SS_UP(X_RALT));
+            SEND_STRING(SS_UP(X_RSHIFT));
+            // SEND_STRING(SS_LCTL(SS_LALT(SS_LGUI("1"))));
+            // SEND_STRING(""SS_LGUI("t"));
+            SEND_STRING(SS_DELAY(1000)"Help"SS_TAP(X_ENTER)SS_TAP(X_TAB)"Help"SS_TAP(X_ENTER));
+            SEND_STRING(SS_TAP(X_ESC));
+        } else {
+            // when keycode QMKBEST is released
+        }
+        break;
+        case GAME_BOT:
+        if (record->event.pressed) {
+            SEND_STRING(SS_DOWN(X_RALT));
+            SEND_STRING(SS_TAP(X_ENTER));
+            SEND_STRING(SS_UP(X_RALT));
+            SEND_STRING(SS_DELAY(1000)"r"SS_DELAY(300));
+            SEND_STRING(SS_DOWN(X_RALT));
+            SEND_STRING(SS_TAP(X_ENTER));
+            SEND_STRING(SS_UP(X_RALT));
+        }
+    }
+    return true;
 }

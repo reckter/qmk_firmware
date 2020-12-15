@@ -71,6 +71,9 @@ enum planck_keycodes
   UC_OE,
   UC_UE,
 
+  // macro in game "Bots are stupid"
+  MACRO_RST,
+
   //songs
   SONG_MARCH,
   SONG_ALL_STAR,
@@ -341,7 +344,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-------------------------------------------------------------------------------------------------'
  */
     [_RAISE] = LAYOUT( \
-                KC_GRV,   DYN_REC_START1,    DYN_REC_START2,   DYN_REC_STOP, _______, _______,                   _______, KC_LBRC, KC_RBRC, _______, _______, KC_BSPC, \
+                KC_GRV,   DYN_REC_START1,    DYN_REC_START2,   DYN_REC_STOP, MACRO_RST, _______,                   _______, KC_LBRC, KC_RBRC, _______, _______, KC_BSPC, \
                 KC_DEL,   _______,           KC_AMPR,          KC_DLR,       UC_EUR,  _______,                   _______, KC_EXLM, KC_AT,   KC_HASH, KC_UNDS, KC_BSLS, \
                 _______,  DYN_MACRO_PLAY1,   DYN_MACRO_PLAY2,  _______,      _______, _______,                   _______, KC_GRV,  KC_NUBS, KC_PGUP, KC_PGDN, _______, \
                 _______, _______,            _______,          _______,      _______, _______, _______, _______, _______, _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY),
@@ -552,6 +555,19 @@ break;
   case SONG_ALL_STAR:
     // PLAY_SONG(all_star);
     return false;
+    break;
+  case MACRO_RST:
+    if (record->envent.pressed)
+    {
+            SEND_STRING(SS_DOWN(X_RALT));
+            SEND_STRING(SS_TAP(X_ENTER));
+            SEND_STRING(SS_UP(X_RALT));
+            SEND_STRING(SS_DELAY(1000)"r"SS_DELAY(300));
+            SEND_STRING(SS_DOWN(X_RALT));
+            SEND_STRING(SS_TAP(X_ENTER));
+            SEND_STRING(SS_UP(X_RALT));
+        }
+    }
     break;
   }
   return true;

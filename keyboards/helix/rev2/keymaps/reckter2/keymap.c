@@ -58,6 +58,10 @@ enum custom_keycodes
   UC_OE,
   UC_UE,
 
+  //Macro for games
+  // for "BotsAreStupid"
+  MACRO_GAME_BOT,
+
   //songs
   SONG_MARCH,
   SONG_ALL_STAR,
@@ -90,6 +94,7 @@ enum macro_keycodes {
 #define XXXXXXX KC_NO
 //Macros
 
+bool do_alt_enter = false;
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     /* GAMING
@@ -172,7 +177,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-------------------------------------------------------------------------------------------------'
  */
     [_RAISE] = LAYOUT( \
-                KC_GRV,   DYN_REC_START1,    DYN_REC_START2,   DYN_REC_STOP, _______, _______,                   _______, KC_LBRC, KC_RBRC, _______, _______, KC_BSPC, \
+                KC_GRV,   DYN_REC_START1,    DYN_REC_START2,   DYN_REC_STOP, MACRO_GAME_BOT, _______,                   _______, KC_LBRC, KC_RBRC, _______, _______, KC_BSPC, \
                 KC_DEL,   _______,           KC_AMPR,          KC_DLR,       UC_EUR,  _______,                   _______, KC_EXLM, KC_AT,   KC_HASH, KC_UNDS, KC_BSLS, \
                 _______,  DYN_MACRO_PLAY1,   DYN_MACRO_PLAY2,  _______,      _______, _______,                   _______, KC_GRV,  KC_NUBS, KC_PGUP, KC_PGDN, _______, \
                 _______, _______,            _______,          _______,      _______, _______, _______, _______, _______, _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY),
@@ -332,8 +337,28 @@ uint16_t get_unicode_hex_for_keypress(int uppercase, uint16_t keycode)
   return 0;
 }
 
+bool abort_on_repeats(uint16_t keycode, int max_presses) {
+  static uint16_t last_keycode = -1;
+  static int current_presses = 0;
+  if (keycode == last_keycode) {
+    current_presses ++;
+    // do not press!
+    if (max_presses <= current_presses) {
+      return true;
+    }
+  } else {
+    last_keycode = keycode;
+    current_presses = 0;
+  }
+  return false;
+}
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+
+  if (record->event.pressed && abort_on_repeats(keycode, 4)) {
+    // return false;
+  }
+
   switch (keycode) {
     case QWERTY:
       if (record->event.pressed) {
@@ -428,12 +453,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
+    case MACRO_GAME_BOT:
+      if (record->event.pressed) {
+            SEND_STRING(SS_DOWN(X_LALT));
+            SEND_STRING(SS_DOWN(X_ENTER));
+            SEND_STRING(SS_DELAY(10)SS_TAP(X_R));
+            SEND_STRING(SS_UP(X_ENTER));
+            SEND_STRING(SS_UP(X_LALT));
+      }
       //led operations - RGB mode change now updates the RGB_current_mode to allow the right RGB mode to be set after reactive keys are released
   }
   return true;
 }
 
 void matrix_init_user(void) {
+    set_unicode_input_mode(UC_OSX);
     #ifdef AUDIO_ENABLE
         startup_user();
     #endif

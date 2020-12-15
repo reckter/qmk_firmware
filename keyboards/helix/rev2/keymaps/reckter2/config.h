@@ -39,4 +39,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endif
 
 #endif /* CONFIG_USER_H */
-//  #define MASTER_RIGHT
+  #define MASTER_RIGHT
