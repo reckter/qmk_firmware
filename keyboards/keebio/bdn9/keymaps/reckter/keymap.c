@@ -31,8 +31,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
     [0] = LAYOUT(
         KC_MUTE, MO(1), KC_MPLY,
-        HYPR(KC_1), HYPR(KC_2), HELP,
-        GAME_BOT, HYPR(KC_5), HYPR(KC_6)
+        HYPR(KC_1), HYPR(KC_2), HYPR(KC_3),
+        HYPR(KC_4), HYPR(KC_5), HYPR(KC_6)
     ),
     /*
         | RESET          | N/A  | Media Stop |
@@ -48,7 +48,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 void encoder_update_user(uint8_t index, bool clockwise) {
     if (index == 0) {
-        if (clockwise) {
+        if (!clockwise) {
             tap_code(KC__VOLUP);
         } else {
             tap_code(KC__VOLDOWN);
