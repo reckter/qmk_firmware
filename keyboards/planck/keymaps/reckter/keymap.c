@@ -85,7 +85,6 @@ enum planck_keycodes
 #define SUPER MO(_SUPER)
 #define UMLAUT MO(_UMLAUT)
 
-#define UC(a) MO(a)
 #define UC_EUR UC(0x20AC)
 #define UE_SZ UC(0x00DF)
 

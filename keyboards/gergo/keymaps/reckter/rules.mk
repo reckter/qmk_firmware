@@ -1,2 +1,4 @@
 SRC += muse.c
 UNICODE_ENABLE = yes
+SLEEP_LED_ENABLE = no
+BOOTMAGIC_ENABLE = no
