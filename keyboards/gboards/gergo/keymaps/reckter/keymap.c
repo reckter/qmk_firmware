@@ -11,12 +11,11 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 
 #include QMK_KEYBOARD_H
-#include "muse.h"
 #include "process_unicode_common.h"
 #include "action_layer.h"
 #include "keymap_german.h"
@@ -63,11 +62,6 @@ enum planck_keycodes
   BACKLIT,
   EXT_PLV,
 
-  // for switching unicode
-  OS_LIN,
-  OS_WIN,
-  OS_MAC,
-
   // umlauts
   UC_AE,
   UC_OE,
@@ -91,12 +85,6 @@ enum planck_keycodes
 
 #define UC_EUR UC(0x20AC)
 #define UE_SZ UC(0x00DF)
-
-
-void matrix_init_user()
-{
-  set_unicode_input_mode(UC_OSX);
-}
 
 
 uint8_t middle_led_r = 0;
@@ -321,9 +309,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
     [_RAISE] = LAYOUT_gergo(
-                KC_GRV, DYN_REC_START1, DYN_REC_START2, DYN_REC_STOP, _______, _______,                                           _______, KC_LBRC, KC_RBRC, _______, _______, KC_BSPC, \
+                KC_GRV, _______, _______, _______, _______, _______,                                           _______, KC_LBRC, KC_RBRC, _______, _______, KC_BSPC, \
                 KC_DEL, _______,  KC_AMPR,  KC_DLR,  UC_EUR, _______, _______,                                           _______, _______, KC_EXLM, KC_AT,   KC_HASH, KC_UNDS, KC_BSLS, \
-                _______,  DYN_MACRO_PLAY1, DYN_MACRO_PLAY2, _______, _______, _______, _______, _______,       _______,  _______, _______, KC_GRV,  KC_NUBS, KC_PGUP, KC_PGDN, _______, \
+                _______,  _______, _______, _______, _______, _______, _______, _______,       _______,  _______, _______, KC_GRV,  KC_NUBS, KC_PGUP, KC_PGDN, _______, \
                 _______, _______, _______, _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY),
 
     /* Umlauts
@@ -390,9 +378,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
     [_ADJUST] = LAYOUT_gergo(
-        _______, RESET, DEBUG, RGB_TOG, RGB_MOD, RGB_HUI,                                              RGB_HUD, RGB_SAI, RGB_SAD, RGB_VAI, RGB_VAD, KC_DEL, \
-        _______, _______, MU_MOD, AU_ON, AU_OFF, AG_NORM, _______,                             _______, XXXXXXX, QWERTY, XXXXXXX, DVORAK, XXXXXXX, _______, \
-        _______, MUV_DE, MUV_IN, MU_ON,  MU_OFF,  MI_ON,    MI_OFF, _______,     _______, _______, TERM_ON, TERM_OFF,  _______, _______, _______, \
+        _______, QK_BOOT, _______, RGB_TOG, RGB_MOD, RGB_HUI,                                              RGB_HUD, RGB_SAI, RGB_SAD, RGB_VAI, RGB_VAD, KC_DEL, \
+        _______, _______, _______, AU_ON, AU_OFF, AG_NORM, _______,                             _______, XXXXXXX, QWERTY, XXXXXXX, DVORAK, XXXXXXX, _______, \
+        _______, _______, _______, MU_ON,  MU_OFF,  MI_ON,    MI_OFF, _______,     _______, _______, _______, _______,  _______, _______, _______, \
         _______, _______, _______, _______, _______, _______, _______, _______,  ),
 
     /* Mouse
@@ -414,7 +402,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX ),
 */
     /* Setting
- * ,-----------------------------------------------------------------------------------.
+ * ,-----------------------------------------------------------------------------------.G_/:
  * |      |      |      |      |      |      |      |Sright|S up  |S down|S left|      |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
  * | exit |      |      |M btn2|M btn1|      |      |Mright|M up  |M down|M left|      |
@@ -425,8 +413,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
     [_SETTING] = LAYOUT_gergo(
-          XXXXXXX,      OS_LIN,     OS_MAC,  OS_WIN, VLK_TOG, TG(_GAMING),                                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
-          TG(_SETTING), SONG_MARCH, SONG_ALL_STAR, XXXXXXX, XXXXXXX, _______,                                 UC_MOD ,AG_SWAP, AG_NORM, BS_NORM, GE_NORM, CG_NORM, CL_NORM, CG_SWAP, \
+          XXXXXXX,      UC_LINX,     UC_MAC,  UC_WIN, VLK_TOG, TG(_GAMING),                                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
+          TG(_SETTING), SONG_MARCH, SONG_ALL_STAR, XXXXXXX, XXXXXXX, _______,                                 _______ ,AG_SWAP, AG_NORM, BS_NORM, GE_NORM, CG_NORM, CL_NORM, CG_SWAP, \
           XXXXXXX,      RGB_MODE_RAINBOW,    RGB_MODE_BREATHE, RGB_MODE_SWIRL, RGB_MODE_SNAKE, RGB_MODE_KNIGHT, _______,  _______,     _______,  _______,XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
           XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX),
 
@@ -437,9 +425,9 @@ float plover_song[][2] = SONG(PLOVER_SOUND);
 float plover_gb_song[][2] = SONG(PLOVER_GOODBYE_SOUND);
 #endif
 
-uint32_t layer_state_set_user(uint32_t state)
+layer_state_t layer_state_set_user(layer_state_t state)
 {
-  uint32_t new_layer = update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
+  layer_state_t new_layer = update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
   return new_layer;
 }
 
@@ -490,7 +478,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
   case QWERTY:
     if (record->event.pressed)
     {
-      print("mode just switched to qwerty and this is a huge string\n");
       set_single_persistent_default_layer(_QWERTY);
       set_middle_led(255, 0, 0);
     }
@@ -525,28 +512,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
     return false;
     break;
 
-    // switch unicode input mode
-  case OS_LIN:
-    set_unicode_input_mode(UC_LNX);
-#ifdef AUDIO_ENABLE
-    PLAY_SONG(unicode_linux);
-#endif
-    return false;
-    break;
-  case OS_WIN:
-    set_unicode_input_mode(UC_WIN);
-#ifdef AUDIO_ENABLE
-    PLAY_SONG(unicode_windows);
-#endif
-    return false;
-    break;
-  case OS_MAC:
-    set_unicode_input_mode(UC_OSX);
-#ifdef AUDIO_ENABLE
-    PLAY_SONG(unicode_mac);
-#endif
-    return false;
-    break;
 
     // macros for umlauts (needs to be a macro, so we can capitalise it)
   case UC_AE:
